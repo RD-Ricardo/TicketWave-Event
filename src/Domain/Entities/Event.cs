@@ -80,10 +80,10 @@ namespace Domain.Entities
             {
                 throw new DomainException("Address is required");
             }
-            if (TicketCategories.Count == 0)
-            {
-                throw new DomainException("At least one ticket category is required");
-            }
+            //if (TicketCategories.Count == 0)
+            //{
+            //    throw new DomainException("At least one ticket category is required");
+            //}
         }
     }
 }

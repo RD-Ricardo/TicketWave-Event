@@ -23,8 +23,8 @@ namespace Application.Events.CreateEvent
                 .NotEmpty().WithMessage("Nome não pode ser vazio/nulo");
 
             RuleFor(x => x.Date)
-                .NotEmpty().WithMessage("Data não pode ser vazia/nula");
-                //.LessThan(DateTime.UtcNow.Date).WithMessage("A data não pode ser menor que hoje.");
+                .NotEmpty().WithMessage("Data não pode ser vazia/nula")
+                .GreaterThan(DateTime.UtcNow.Date).WithMessage("A data não pode ser menor que hoje.");
 
             RuleFor(x => x.Street)
                 .NotEmpty().WithMessage("Rua não pode ser vazia/nula");
@@ -39,7 +39,8 @@ namespace Application.Events.CreateEvent
                 .NotEmpty().WithMessage("Estado não pode ser vazio/nulo");
 
             RuleFor(x => x.ZipCode)
-                .NotEmpty().WithMessage("CEP não pode ser vazio/nulo");
+                .NotEmpty().WithMessage("CEP não pode ser vazio/nulo")
+                .Matches("^\\d{5}-\\d{3}$").WithMessage("Cep invalido");
 
             RuleFor(x => x.Country)
                 .NotEmpty().WithMessage("País não pode ser vazio/nulo");

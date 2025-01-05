@@ -43,6 +43,11 @@ namespace Infrastructure.Persistence
             return data.SingleOrDefault();
         }
 
+        public async Task<int> SaveChanges()
+        {
+            return await _context.SaveChanges();
+        }
+
         public async Task Update(TEntity entity)
         {
             entity.SetUpdatedAt();

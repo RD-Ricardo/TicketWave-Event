@@ -9,5 +9,6 @@ namespace Domain.Repositories
         Task Delete(TEntity entity);
         Task<TEntity> GetById(Guid id);
         Task<IEnumerable<TEntity>> GetAll();
+        Task<int> SaveChanges();
     }
 }

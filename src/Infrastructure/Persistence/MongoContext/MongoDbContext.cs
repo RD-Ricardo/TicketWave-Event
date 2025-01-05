@@ -1,5 +1,9 @@
-﻿using MongoDB.Driver;
+﻿using Domain.Entities;
+using MongoDB.Driver;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson;
 
 namespace Infrastructure.Persistence.MongoContext
 {
@@ -17,33 +21,50 @@ namespace Infrastructure.Persistence.MongoContext
 
         public MongoDbContext(IConfiguration configuration)
         {
-            _configuration = configuration;
-
             _commands = [];
-
+            
+            _configuration = configuration;
             _mongoClient = new MongoClient(_configuration["MongoSettings:Connection"]);
 
             _database = _mongoClient.GetDatabase(_configuration["MongoSettings:DatabaseName"]);
 
             _session = (IClientSessionHandle)null!;
+
+            Entities();
+        }
+
+        public void Entities()
+        {
+            if (!BsonClassMap.IsClassMapRegistered(typeof(BaseEntity)))
+            {
+                BsonClassMap.RegisterClassMap<BaseEntity>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.MapIdMember(c => c.Id)
+                        .SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
+                });
+            }
+
+            if (!BsonClassMap.IsClassMapRegistered(typeof(Event)))
+            {
+                BsonClassMap.RegisterClassMap<Event>(cm =>
+                {
+                    cm.AutoMap();
+                });
+            }
         }
 
         public async Task<int> SaveChanges()
         {
-            using (_session = await _mongoClient.StartSessionAsync())
+            var commandTasks = _commands.Select(c => c());
+
+            try
             {
-                var commandTasks = _commands.Select(c => c());
-
-                try
-                {
-                    await Task.WhenAll(commandTasks);
-
-                    await _session.CommitTransactionAsync(new CancellationToken());
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
+                await Task.WhenAll(commandTasks);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
 
             return _commands.Count;

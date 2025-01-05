@@ -1,4 +1,6 @@
-﻿using Infrastructure.Persistence.MongoContext;
+﻿using Domain.Repositories;
+using Infrastructure.Persistence;
+using Infrastructure.Persistence.MongoContext;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
@@ -7,7 +9,8 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfra(this IServiceCollection services)
         {
-            services.AddScoped<IMongoDbContext, MongoDbContext>();
+            services.AddTransient<IMongoDbContext, MongoDbContext>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             return services;
         }
     }
