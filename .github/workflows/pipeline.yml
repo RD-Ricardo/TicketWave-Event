@@ -11,8 +11,8 @@ on:
 
 env:
   PROJECT_LOCATION: ./src/api/api.csproj
-  ELASTIC_BEANSTALK_NAME: develop-net-core
-  ELASTIC_BEANSTALK_ENV_NAME: develop-net-core
+  ELASTIC_BEANSTALK_NAME: ticket-wave-event
+  ELASTIC_BEANSTALK_ENV_NAME: ticket-wave-event-dev
 
 jobs:
   build:
