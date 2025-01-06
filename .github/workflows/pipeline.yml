@@ -11,8 +11,8 @@ on:
 
 env:
   PROJECT_LOCATION: ./src/api/api.csproj
-  ELASTIC_BEANSTALK_NAME: dotnet-linux
-  ELASTIC_BEANSTALK_ENV_NAME: Dotnet-linux-env
+  ELASTIC_BEANSTALK_NAME: develop-net-core
+  ELASTIC_BEANSTALK_ENV_NAME: develop-net-core
 
 jobs:
   build:
