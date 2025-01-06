@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_LOCATION: api/api.csproj
+  PROJECT_LOCATION: src/api/api.csproj
   ELASTIC_BEANSTALK_NAME: dotnet-linux
   ELASTIC_BEANSTALK_ENV_NAME: Dotnet-linux-env
 
